@@ -7,6 +7,7 @@ Cleaning the official Directory of Economic Establishments in Navarra (Spain) fo
 - [Purpose](#purpose)
 - [Raw Dataset](#raw_dataset)
 - [Data Cleaning Contract](#data_cleaning_contract)
+- [How to run](#how_to_run)
 
 ## Purpose
 
@@ -40,7 +41,18 @@ After this process, the dataset has:
 
 The result is a clean dataset that can be safely reused for further processing or modeling.
 
+## How to run
 
+This project follows a simple fetch → clean workflow.
 
+Clone the repository:
+```bash
+git clone https://github.com/bravojuandb/navarra-economic-establishments-cleaning.git
+```
+Install requirements.tx.
 
+Download the raw dataset:
 
+```bash
+python fetch_registry.py
+```
