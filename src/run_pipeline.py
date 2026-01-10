@@ -3,6 +3,7 @@ import logging
 
 from src.read import read
 from src.trim_whitespace import trim_whitespace
+from src.handle_nulls import handle_nulls
 
 logging.basicConfig(
     level=logging.INFO,
@@ -18,4 +19,15 @@ df = read(file_path)
 logging.info("Loaded %d rows", len(df))
 
 #------- TRIM WHITESPACES
-df = trim_whitespace(df)
+df = trim_whitespace(df, verbose=True)
+
+
+#------- HANDLE NULL VALUES 
+df = handle_nulls(df, verbose=True)
+
+
+
+
+
+
+logging.info("Pipeline completed successfully")
