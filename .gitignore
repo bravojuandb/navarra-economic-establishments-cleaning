@@ -209,3 +209,4 @@ __marimo__/
 # Raw data
 data/raw/*.csv
 .DS_Store
+data/processed/output_sample.csv
