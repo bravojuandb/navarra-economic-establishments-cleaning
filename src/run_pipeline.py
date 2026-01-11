@@ -5,6 +5,7 @@ from src.read import read
 from src.trim_whitespace import trim_whitespace
 from src.handle_nulls import handle_nulls
 from src.fix_string_numerals import fix_string_numerals
+from src.cast_year_to_int import cast_year_to_int
 
 from src.write import write
 
@@ -28,13 +29,11 @@ df = trim_whitespace(df, verbose=True)
 df = handle_nulls(df, verbose=True)
 
 #------- FIX STRING NUMERALS
-
 df = fix_string_numerals(df)
 
+#------- ENFORCE DATA TYPE INT64
 
-
-
-
+df = cast_year_to_int(df)
 
 #-------  WRITE TO CSV (FOR DEBUGGING PURPOSE ONLY) 
 
