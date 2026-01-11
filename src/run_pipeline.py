@@ -6,6 +6,8 @@ from src.trim_whitespace import trim_whitespace
 from src.handle_nulls import handle_nulls
 from src.fix_string_numerals import fix_string_numerals
 from src.cast_year_to_int import cast_year_to_int
+from src.dedupe_rows import dedupe_rows
+from src.validate import validate
 
 from src.write import write
 
@@ -34,6 +36,16 @@ df = fix_string_numerals(df)
 #------- ENFORCE DATA TYPE INT64
 
 df = cast_year_to_int(df)
+
+#------- REMOVE DUPLICATE ROWS
+
+df = dedupe_rows(df)
+
+#------- VALIDATE PIPELINE
+
+validate(df)
+
+
 
 #-------  WRITE TO CSV (FOR DEBUGGING PURPOSE ONLY) 
 
