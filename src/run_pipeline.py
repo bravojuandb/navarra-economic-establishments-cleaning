@@ -4,6 +4,7 @@ import logging
 from src.read import read
 from src.trim_whitespace import trim_whitespace
 from src.handle_nulls import handle_nulls
+from src.fix_string_numerals import fix_string_numerals
 
 from src.write import write
 
@@ -23,9 +24,14 @@ logging.info("Loaded %d rows", len(df))
 #------- TRIM WHITESPACES
 df = trim_whitespace(df, verbose=True)
 
-
 #------- HANDLE NULL VALUES 
 df = handle_nulls(df, verbose=True)
+
+#------- FIX STRING NUMERALS
+
+df = fix_string_numerals(df)
+
+
 
 
 
