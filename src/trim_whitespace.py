@@ -25,7 +25,3 @@ def trim_whitespace(df: pd.DataFrame, verbose: bool = False) -> pd.DataFrame:
         logging.info("Trimmed %d whitespace characters", before - after)
 
     return df
-
-if __name__ == "__main__":
-
-    trim_whitespace()
