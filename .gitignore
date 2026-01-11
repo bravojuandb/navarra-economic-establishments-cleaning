@@ -210,3 +210,4 @@ __marimo__/
 data/raw/*.csv
 .DS_Store
 data/processed/output_sample.csv
+data/processed/*.parquet
