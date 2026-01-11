@@ -50,7 +50,10 @@ df = validate(df)
 
 #-------  WRITE TO CSV (FOR DEBUGGING PURPOSE ONLY) 
 
-write(df, base_dir / "data" / "processed" / "output_sample.csv")
+DEBUG_WRITE_CSV = False
+
+if DEBUG_WRITE_CSV:
+    write(df, base_dir / "data" / "processed" / "output_sample.csv")
 
 #-------  WRITE TO PARQUET (FINAL STEP) 
 
