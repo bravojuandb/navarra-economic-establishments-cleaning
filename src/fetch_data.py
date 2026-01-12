@@ -1,7 +1,3 @@
-# This script downloads the CSV report from the official source
-# and saves it to data/raw (raw layer).
-
-#!/usr/bin/env python3
 from pathlib import Path
 import logging
 import requests
