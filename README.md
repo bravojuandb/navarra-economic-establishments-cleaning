@@ -1,10 +1,10 @@
 # navarra-data-batch-pipeline
 
-A reproducible batch data pipeline that standardizes Navarra’s official economic establishments registry.
+A reproducible batch data pipeline that cleans and standardizes Navarra’s official economic establishments registry.
 
-**Input:** raw CSV (kept immutable)  
-**Output:** validated Parquet (`data/processed/navarra_processed.parquet`)  
-**Goal:** produce an analysis-ready dataset through deterministic cleaning, type enforcement, deduplication, and validation.
+**Input:** raw CSV (kept immutable in `/data/raw/economic_establishments_navarra.csv`)  
+**Output:** analysis ready Parquet (`data/processed/navarra_processed.parquet`)  
+**Goal:** produce an analysis-ready dataset through rule-based cleaning, type enforcement, deduplication, and validation.
 
 ## Contents
 
@@ -35,14 +35,14 @@ The pipeline applies the following rules:
 1. **Standardize missing and invalid values into explicit nulls** (empty strings, placeholders like . or 0) 
 2. **Enforce data types** (years -> integers, codes and identifiers -> strings)
 3. **Preserve identifier columns as strings** (e.g. dnici, codpost, cod_cmun, codigo_entidad)
-4. **Clean obvious formatting issues** (trim leading/trailing spaces , remove .0 from CNAE codes and adress numbers)
+4. **Clean obvious formatting issues** (trim leading/trailing spaces , remove .0 from CNAE codes and address numbers)
 5. **Keep free-text fields** (addresses, names, descriptions) untouched except for basic trimming
 6. **Remove only exact duplicate rows**
 
 After this process (guarantees):
 
 - Raw input file is never modified 
-- All columns are read as strings to prevent automatic coercion.
+- All columns are read as strings (with explicit type control) to prevent automatic coercion.
 - Missing or invalid values are explicitly standardized to pd.NA.
 - Only one column (anio) is intentionally cast to a nullable integer type (Int64).
 - Codes and identifiers are preserved as strings to retain their identifier semantics.
@@ -55,22 +55,23 @@ The result is a clean dataset in parquet format that can be safely reused for fu
 ## Pipeline overview
 
 Raw CSV
-→ fetch_data (if True)
+→ fetch_data (optional)
 → read 
 → trim_whitespace
 → handle_nulls
 → fix_string_numerals
 → cast_year_to_int
 → dedupe_rows
-→ validate (schema + invariants)
+→ validate (sanity checks on core invariants)
+→ write (write to CSV, optional)
 → write_to_parquet
 
-## Example tranformation
+## Example transformation
 
 ```md
 | Column     | Raw value        | Cleaned value        |
 |------------|------------------|----------------------|
-| anio       | "2021.0"         | 2021 (Int64)         |
+| anio       | "2021"           | 2021 (Int64)         |
 | dnici      | "G31189269"      | "G31189269" (string) |
 | nombre     | "     "          | null                 |
 | portalt    | "5.0"            | "5" (string)         |
@@ -80,16 +81,26 @@ Raw CSV
 
 ## How to run
 
-This project follows a simple fetch → clean workflow.
+This project follows a simple workflow:  
+
+fetch → raw_data → transform → processed_data
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/bravojuandb/navarra-economic-establishments-cleaning.git
+git clone https://github.com/bravojuandb/navarra-data-batch-pipeline.git
 ```
-2. Install requirements.txt
+2. Install dependencies from requirements.txt:
+```bash
+pip install -r requirements.txt
+```
+3. Data download is controlled by a flag to keep ingestion explicit and reproducible:  
+Open [run_pipeline.py](src/run_pipeline.py) and set `DOWNLOAD_INPUT_DATA = True`.
 
-3. Run the pipeline:
-
+4. Run the pipeline:
 ```bash
 python -m src.run_pipeline
 ```
+5. Raw data is downloaded to: `./data/raw/economic_establishments_navarra.csv`, and read from there.  
+   Processed output is saved to: `./data/processed/navarra_processed.parquet`  
+
+6. To run the pipeline again, set `DOWNLOAD_INPUT_DATA = False`.  The pipeline is idempotent after ingestion; re-running it on the same raw input produces identical output.
