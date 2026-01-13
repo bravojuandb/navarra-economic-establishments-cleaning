@@ -44,7 +44,7 @@ def main() -> None:
     df = validate(df)
 
     #-------  DEBUG CSV (OPTIONAL) 
-    DEBUG_WRITE_CSV = True
+    DEBUG_WRITE_CSV = False
     if DEBUG_WRITE_CSV:
         from src.write import write
         write(df, base_dir / "data" / "processed" / "output_sample.csv")
