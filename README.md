@@ -55,7 +55,7 @@ After this process (guarantees):
 The result is a clean dataset in parquet format that can be safely reused for further processing or modeling.
 
 ## Pipeline overview
-
+```
 Raw CSV
 → fetch_data (optional)
 → read 
@@ -67,6 +67,7 @@ Raw CSV
 → validate (sanity checks on core invariants)
 → write (write to CSV, optional)
 → write_to_parquet
+```
 
 ## Example transformation
 
@@ -102,7 +103,8 @@ Open [run_pipeline.py](src/run_pipeline.py) and set `DOWNLOAD_INPUT_DATA = True`
 ```bash
 python -m src.run_pipeline
 ```
-5. Raw data is downloaded to: `./data/raw/economic_establishments_navarra.csv`, and read from there.  
-   Processed output is saved to: `./data/processed/navarra_processed.parquet`  
+5. Raw data is downloaded to: `./data/raw/economic_establishments_navarra.csv`, and read from that location.  
+   The CSV file is approximately 72.5 MB, and the download may take around 60 seconds.
+   The processed output is saved to: `./data/processed/navarra_processed.parquet`  
 
 6. To run the pipeline again, set `DOWNLOAD_INPUT_DATA = False`.  The pipeline is idempotent after ingestion; re-running it on the same raw input produces identical output.
